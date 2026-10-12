@@ -584,3 +584,66 @@ h1 {
   }
 }
 
+/* STEP 5 — TRICK COMPLETE */
+
+.trick-winner {
+  margin: 44px 0 8px;
+  color: #052985;
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.winning-card {
+  margin: 0 0 30px;
+  font-size: 28px;
+  line-height: 1.4;
+}
+
+.updated-score {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 820px;
+  padding: 30px 32px;
+  background: #f0f5ff;
+  border: 2px solid #03050a;
+  border-radius: 16px;
+}
+
+.updated-score p {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.updated-score .next-leader {
+  color: #052985;
+  font-size: 24px;
+}
+
+.demo-note {
+  margin-top: 20px;
+  color: #383d45;
+  font-size: 18px;
+}
+
+/* Focus indication for programmatically focused headings */
+
+h1:focus {
+  outline: none;
+}
+
+@media (max-width: 600px) {
+  .trick-winner {
+    font-size: 32px;
+  }
+
+  .winning-card {
+    font-size: 23px;
+  }
+
+  .updated-score p {
+    font-size: 22px;
+  }
+}

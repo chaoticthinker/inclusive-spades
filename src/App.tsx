@@ -1,5 +1,5 @@
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import {
   PlayingCard,
@@ -90,6 +90,43 @@ function TrickTable() {
 }
 
 function App() {
+  const rankValues: Record<string, number> = {
+  '2': 2, '3': 3, '4': 4, '5': 5,
+  '6': 6, '7': 7, '8': 8, '9': 9,
+  '10': 10, J: 11, Q: 12, K: 13, A: 14,
+}
+
+
+function getDemoTrickWinner(playerCard: PlayingCardData) {
+  const plays: {
+    player: string
+    card: PlayingCardData
+  }[] = [
+    {
+      player: 'Theo',
+      card: { rank: '4', suit: 'clubs' },
+    },
+    {
+      player: 'Maya',
+      card: { rank: 'K', suit: 'clubs' },
+    },
+    {
+      player: 'You',
+      card: playerCard,
+    },
+    {
+      player: 'Sam',
+      card: { rank: '2', suit: 'clubs' },
+    },
+  ]
+
+  return plays.reduce((winner, play) =>
+    rankValues[play.card.rank] > rankValues[winner.card.rank]
+      ? play
+      : winner
+  )
+}
+
   const [selectedMode, setSelectedMode] =
     useState<InformationMode | null>(null)
 
@@ -100,6 +137,12 @@ function App() {
 
   const [playedCard, setPlayedCard] =
     useState<PlayingCardData | null>(null)
+
+  const headingRef = useRef<HTMLHeadingElement>(null)
+
+  useEffect(() => {
+    headingRef.current?.focus()
+  }, [screen])
 
   function selectCard(card: PlayingCardData) {
     setSelectedCard(card)
@@ -147,7 +190,7 @@ function App() {
 
       {screen === 'welcome' && (
         <main className="main-content">
-          <h1>Play together, your way</h1>
+          <h1 ref={headingRef} tabIndex={-1}>Play together, your way</h1>
           <p className="intro">
             Choose how game information is presented.
             Every mode uses the same shared table,
@@ -192,7 +235,7 @@ function App() {
           </button>
 
           <p className="step-label">STEP 1 OF 5</p>
-          <h1>Ready to play?</h1>
+          <h1 ref={headingRef} tabIndex={-1}>Ready to play?</h1>
 
           <section
             className="game-summary"
@@ -229,7 +272,7 @@ function App() {
           </button>
 
           <p className="step-label">STEP 2 OF 5</p>
-          <h1>Trick {sampleTrick.number}</h1>
+          <h1 ref={headingRef} tabIndex={-1}>Trick {sampleTrick.number}</h1>
 
           <h2 className="lead-suit">
             {sampleTrick.leadSuit.toUpperCase()} LED
@@ -264,7 +307,7 @@ function App() {
           </button>
 
           <p className="step-label">STEP 3 OF 5</p>
-          <h1>Choose a card</h1>
+          <h1 ref={headingRef} tabIndex={-1}>Choose a card</h1>
 
           <p className="card-instruction">
             Clubs are led. Play a club.
@@ -311,7 +354,7 @@ function App() {
           </button>
 
           <p className="step-label">STEP 4 OF 5</p>
-          <h1>Confirm play</h1>
+          <h1 ref={headingRef} tabIndex={-1}>Confirm play</h1>
 
           <h2 className="confirm-question">
             Play the {getCardName(selectedCard)}?
@@ -353,40 +396,53 @@ function App() {
         </main>
       )}
 
-      {screen === 'result' && playedCard && (
-        <main className="game-content">
-          <p className="step-label">STEP 5 OF 5</p>
-          <h1>Trick complete</h1>
+      
+      {screen === 'result' && playedCard && (() => {
+        const winner = getDemoTrickWinner(playedCard)
 
-          <div className="game-feedback" role="status">
-            <h2>
-              You played the {getCardName(playedCard)}.
+        return (
+          <main className="game-content">
+            <p className="step-label">STEP 5 OF 5</p>
+            <h1 ref={headingRef} tabIndex={-1}>Trick complete</h1>
+
+            <h2 className="trick-winner">
+              {winner.player.toUpperCase()} WINS
             </h2>
 
-            <p>
-              Your card has been recorded in this
-              demonstration.
+            <p className="winning-card">
+              {getCardName(winner.card)} takes the trick.
             </p>
 
-            <p>
-              The full trick result and score updates
-              are coming in our next feature.
-            </p>
-          </div>
+            <section
+              className="updated-score"
+              aria-label="Updated trick counts"
+            >
+              <p>YOUR TEAM　3 TRICKS</p>
+              <p>OPPONENTS　1 TRICK</p>
+              <p className="next-leader">
+                {winner.player.toUpperCase()} LEADS NEXT
+              </p>
+            </section>
 
-          <button
-            type="button"
-            className="primary-button"
-            onClick={() => {
-              setSelectedCard(null)
-              setPlayedCard(null)
-              setScreen('ready')
-            }}
-          >
-            RESTART DEMO
-          </button>
-        </main>
-      )}
+            <p className="demo-note">
+              Demonstration result using the sample trick.
+            </p>
+
+            <button
+              type="button"
+              className="primary-button"
+              onClick={() => {
+                setSelectedCard(null)
+                setPlayedCard(null)
+                setScreen('ready')
+              }}
+            >
+              RESTART DEMO
+            </button>
+          </main>
+        )
+      })()}
+
 
 
     </div>
