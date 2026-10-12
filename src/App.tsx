@@ -1,121 +1,86 @@
+
 import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
 import './App.css'
 
+type InformationMode = 'blind' | 'low-vision' | 'sighted'
+
+const modes = [
+  {
+    id: 'blind',
+    title: 'Blind / nonvisual',
+    description:
+      'Linear game announcements, keyboard-first controls, review and repeat.',
+  },
+  {
+    id: 'low-vision',
+    title: 'Low vision',
+    description:
+      'Large type, high contrast, simplified table, and strong focus cues.',
+  },
+  {
+    id: 'sighted',
+    title: 'Sighted',
+    description:
+      'Visual table, compact game state, and a traditional card layout.',
+  },
+] as const
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [selectedMode, setSelectedMode] =
+    useState<InformationMode | null>(null)
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="app">
+      <header className="site-header">
+        <a className="brand" href="/">
+          ♠ INCLUSIVE SPADES
+        </a>
+        <nav aria-label="Main navigation">
+          <a href="#main">Choose mode</a>
+        </nav>
+      </header>
 
-      <div className="ticks"></div>
+      <main id="main" className="main-content">
+        <h1>Play together, your way</h1>
+        <p className="intro">
+          Choose how game information is presented. Every mode
+          uses the same shared table, turn order, and outcome.
+        </p>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+        <div className="mode-grid">
+          {modes.map((mode) => (
+            <button
+              key={mode.id}
+              type="button"
+              className={`mode-card ${
+                selectedMode === mode.id ? 'selected' : ''
+              }`}
+              aria-pressed={selectedMode === mode.id}
+              onClick={() => setSelectedMode(mode.id)}
+            >
+              <span className="mode-title">{mode.title}</span>
+              <span className="mode-description">
+                {mode.description}
+              </span>
+              <span className="mode-action">
+                {selectedMode === mode.id
+                  ? 'Selected ✓'
+                  : 'Explore this mode →'}
+              </span>
+            </button>
+          ))}
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+        <p className="help-text">
+          You can change this setting at any time from Accessibility.
+        </p>
+        <p className="selection-status" role="status">
+          {selectedMode
+            ? `${modes.find((mode) => mode.id === selectedMode)?.title} mode selected.`
+            : 'No information mode selected yet.'}
+        </p>
+      </main>
+    </div>
   )
 }
 
