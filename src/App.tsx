@@ -1,9 +1,21 @@
 
 import { useState } from 'react'
 import './App.css'
+import {
+  PlayingCard,
+  getCardName,
+  type PlayingCardData,
+} from './components/PlayingCard'
 
 type InformationMode = 'blind' | 'low-vision' | 'sighted'
-type Screen = 'welcome' | 'ready' | 'trick' | 'cards'
+
+type Screen =
+  | 'welcome'
+  | 'ready'
+  | 'trick'
+  | 'cards'
+  | 'confirm'
+  | 'result'
 
 const modes = [
   {
@@ -38,6 +50,13 @@ const sampleTrick = {
     south: { name: 'You', card: null },
   },
 }
+
+
+const sampleCards: PlayingCardData[] = [
+  { rank: '8', suit: 'clubs' },
+  { rank: 'Q', suit: 'clubs' },
+]
+
 
 function TrickTable() {
   const { players } = sampleTrick
@@ -75,6 +94,30 @@ function App() {
     useState<InformationMode | null>(null)
 
   const [screen, setScreen] = useState<Screen>('welcome')
+
+  const [selectedCard, setSelectedCard] =
+    useState<PlayingCardData | null>(null)
+
+  const [playedCard, setPlayedCard] =
+    useState<PlayingCardData | null>(null)
+
+  function selectCard(card: PlayingCardData) {
+    setSelectedCard(card)
+    setScreen('confirm')
+  }
+
+  function cancelCard() {
+    setSelectedCard(null)
+    setScreen('cards')
+  }
+
+  function confirmCard() {
+    if (!selectedCard) return
+
+    setPlayedCard(selectedCard)
+    setSelectedCard(null)
+    setScreen('result')
+  }
 
   function chooseMode(mode: InformationMode) {
     setSelectedMode(mode)
@@ -209,9 +252,11 @@ function App() {
         </main>
       )}
 
+      
       {screen === 'cards' && (
         <main className="game-content">
           <button
+            type="button"
             className="back-button"
             onClick={() => setScreen('trick')}
           >
@@ -220,20 +265,130 @@ function App() {
 
           <p className="step-label">STEP 3 OF 5</p>
           <h1>Choose a card</h1>
-          <p className="intro">
+
+          <p className="card-instruction">
             Clubs are led. Play a club.
           </p>
 
-          <div className="game-feedback" role="status">
-            <h2>Your cards are coming next!</h2>
-            <p>
-              In our next development step, we'll build
-              the accessible playing card components
-              from your Figma design.
+          <div
+            className="playable-cards"
+            role="group"
+            aria-label="Playable cards"
+          >
+            {sampleCards.map((card) => (
+              <PlayingCard
+                key={`${card.rank}-${card.suit}`}
+                card={card}
+                playable={true}
+                onSelect={selectCard}
+              />
+            ))}
+          </div>
+
+          <p className="focus-hint">
+            Yellow outline shows keyboard focus.
+          </p>
+
+          <button
+            type="button"
+            className="secondary-button review-button"
+            onClick={() => setScreen('trick')}
+          >
+            REVIEW GAME STATE
+          </button>
+        </main>
+      )}
+
+      
+      {screen === 'confirm' && selectedCard && (
+        <main className="game-content">
+          <button
+            type="button"
+            className="back-button"
+            onClick={cancelCard}
+          >
+            ← Back to playable cards
+          </button>
+
+          <p className="step-label">STEP 4 OF 5</p>
+          <h1>Confirm play</h1>
+
+          <h2 className="confirm-question">
+            Play the {getCardName(selectedCard)}?
+          </h2>
+
+          <section
+            className="selected-card-panel"
+            aria-label="Selected card"
+          >
+            <div
+              className="selected-card-face"
+              aria-hidden="true"
+            >
+              {selectedCard.rank} ♣
+            </div>
+
+            <p className="valid-play">
+              VALID PLAY
             </p>
+          </section>
+
+          <div className="confirmation-actions">
+            <button
+              type="button"
+              className="primary-button"
+              onClick={confirmCard}
+            >
+              PLAY CARD
+            </button>
+
+            <button
+              type="button"
+              className="secondary-button"
+              onClick={cancelCard}
+            >
+              CANCEL
+            </button>
           </div>
         </main>
       )}
+
+      {screen === 'result' && playedCard && (
+        <main className="game-content">
+          <p className="step-label">STEP 5 OF 5</p>
+          <h1>Trick complete</h1>
+
+          <div className="game-feedback" role="status">
+            <h2>
+              You played the {getCardName(playedCard)}.
+            </h2>
+
+            <p>
+              Your card has been recorded in this
+              demonstration.
+            </p>
+
+            <p>
+              The full trick result and score updates
+              are coming in our next feature.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            className="primary-button"
+            onClick={() => {
+              setSelectedCard(null)
+              setPlayedCard(null)
+              setScreen('ready')
+            }}
+          >
+            RESTART DEMO
+          </button>
+        </main>
+      )}
+
+
     </div>
   )
 }
