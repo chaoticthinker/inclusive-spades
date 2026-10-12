@@ -3,6 +3,7 @@ import { useState } from 'react'
 import './App.css'
 
 type InformationMode = 'blind' | 'low-vision' | 'sighted'
+type Screen = 'welcome' | 'ready'
 
 const modes = [
   {
@@ -29,57 +30,116 @@ function App() {
   const [selectedMode, setSelectedMode] =
     useState<InformationMode | null>(null)
 
+  const [screen, setScreen] = useState<Screen>('welcome')
+  const [handStarted, setHandStarted] = useState(false)
+
+  function chooseMode(mode: InformationMode) {
+    setSelectedMode(mode)
+    setScreen('ready')
+  }
+
+  function returnToWelcome() {
+    setScreen('welcome')
+    setHandStarted(false)
+  }
+
   return (
     <div className="app">
       <header className="site-header">
-        <a className="brand" href="/">
-          ♠ INCLUSIVE SPADES
-        </a>
-        <nav aria-label="Main navigation">
-          <a href="#main">Choose mode</a>
-        </nav>
+        <span className="brand">♠ INCLUSIVE SPADES</span>
+        {screen === 'ready' ? (
+          <span className="current-mode">
+            {modes.find((mode) => mode.id === selectedMode)?.title}
+          </span>
+        ) : (
+          <span className="current-mode">CHOOSE YOUR MODE</span>
+        )}
       </header>
 
-      <main id="main" className="main-content">
-        <h1>Play together, your way</h1>
-        <p className="intro">
-          Choose how game information is presented. Every mode
-          uses the same shared table, turn order, and outcome.
-        </p>
+      {screen === 'welcome' ? (
+        <main className="main-content">
+          <h1>Play together, your way</h1>
+          <p className="intro">
+            Choose how game information is presented. Every
+            mode uses the same shared table, turn order,
+            and outcome.
+          </p>
 
-        <div className="mode-grid">
-          {modes.map((mode) => (
+          <div className="mode-grid">
+            {modes.map((mode) => (
+              <button
+                key={mode.id}
+                type="button"
+                className="mode-card"
+                onClick={() => chooseMode(mode.id)}
+              >
+                <span className="mode-title">
+                  {mode.title}
+                </span>
+                <span className="mode-description">
+                  {mode.description}
+                </span>
+                <span className="mode-action">
+                  Explore this mode →
+                </span>
+              </button>
+            ))}
+          </div>
+
+          <p className="help-text">
+            You can change this setting at any time
+            from Accessibility.
+          </p>
+        </main>
+      ) : (
+        <main className="game-content">
+          <button
+            className="back-button"
+            onClick={returnToWelcome}
+          >
+            ← Change information mode
+          </button>
+
+          <p className="step-label">STEP 1 OF 5</p>
+          <h1>Ready to play?</h1>
+
+          <section
+            className="game-summary"
+            aria-label="Current game summary"
+          >
+            <p className="round-label">ROUND 3</p>
+
+            <p className="score-line">
+              YOUR TEAM <strong>42</strong>
+            </p>
+
+            <p className="score-line">
+              OPPONENTS <strong>36</strong>
+            </p>
+
+            <p className="game-detail">
+              BAGS TO WIN 10
+            </p>
+          </section>
+
+          {!handStarted ? (
             <button
-              key={mode.id}
-              type="button"
-              className={`mode-card ${
-                selectedMode === mode.id ? 'selected' : ''
-              }`}
-              aria-pressed={selectedMode === mode.id}
-              onClick={() => setSelectedMode(mode.id)}
+              className="primary-button"
+              onClick={() => setHandStarted(true)}
             >
-              <span className="mode-title">{mode.title}</span>
-              <span className="mode-description">
-                {mode.description}
-              </span>
-              <span className="mode-action">
-                {selectedMode === mode.id
-                  ? 'Selected ✓'
-                  : 'Explore this mode →'}
-              </span>
+              START HAND
             </button>
-          ))}
-        </div>
-
-        <p className="help-text">
-          You can change this setting at any time from Accessibility.
-        </p>
-        <p className="selection-status" role="status">
-          {selectedMode
-            ? `${modes.find((mode) => mode.id === selectedMode)?.title} mode selected.`
-            : 'No information mode selected yet.'}
-        </p>
-      </main>
+          ) : (
+            <div className="game-feedback" role="status">
+              <h2>Hand started!</h2>
+              <p>
+                The next step is to display the
+                current trick and playable cards.
+              </p>
+            </div>
+          )}
+        </main>
+      )}
     </div>
   )
 }
