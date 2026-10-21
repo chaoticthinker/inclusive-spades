@@ -1,0 +1,272 @@
+
+/* =====================================
+   SIGHTED MODE
+   ===================================== */
+
+.sighted-layout {
+  min-height: calc(100vh - 76px);
+  padding: 28px clamp(20px, 5vw, 72px) 72px;
+  background: #050a1a;
+  color: #f0f5ff;
+}
+
+.sighted-back {
+  border: none;
+  background: transparent;
+  color: #dbe5ff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 16px;
+  padding: 12px 0;
+}
+
+.sighted-back:hover {
+  text-decoration: underline;
+}
+
+.sighted-ready {
+  max-width: 760px;
+  margin: 55px auto 0;
+  text-align: center;
+}
+
+.sighted-eyebrow {
+  color: #b5c8ff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.sighted-ready h1,
+.sighted-game h1 {
+  color: white;
+  font-size: clamp(34px, 5vw, 52px);
+  margin: 12px 0 20px;
+}
+
+.sighted-intro {
+  color: #dbe5ff;
+  font-size: 19px;
+  line-height: 1.6;
+}
+
+.sighted-summary {
+  margin: 44px auto 36px;
+  border: 1px solid #4772d1;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #0d1b43;
+}
+
+.sighted-summary-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 24px;
+  background: #052985;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.sighted-score-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.sighted-score-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 36px 20px;
+}
+
+.sighted-score-grid > div + div {
+  border-left: 1px solid #4772d1;
+}
+
+.sighted-score-label {
+  color: #c8d8ff;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.sighted-score-grid strong {
+  color: white;
+  font-size: clamp(48px, 8vw, 76px);
+  line-height: 1;
+}
+
+.sighted-primary {
+  padding: 16px 34px;
+  border: 2px solid #ffc208;
+  border-radius: 10px;
+  background: #ffc208;
+  color: #03050a;
+  font: inherit;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.sighted-primary:hover {
+  background: #ffda59;
+}
+
+.sighted-primary:focus-visible,
+.sighted-back:focus-visible {
+  outline: 4px solid #ffc208;
+  outline-offset: 5px;
+}
+
+.sighted-game {
+  max-width: 1200px;
+  margin: 24px auto 0;
+}
+
+.sighted-game-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.sighted-mini-score {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 16px;
+}
+
+.sighted-table-status {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin: 16px 0;
+  color: #f0f5ff;
+  font-size: 18px;
+}
+
+.sighted-card-table {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    ". north ."
+    "west center east"
+    ". south .";
+  align-items: center;
+  gap: 18px;
+  min-height: 460px;
+  padding: 28px;
+  border: 8px solid #244d3d;
+  border-radius: 90px;
+  background: #126344;
+  box-shadow: inset 0 0 0 3px #46956e;
+}
+
+.sighted-seat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.sighted-north { grid-area: north; }
+.sighted-west { grid-area: west; }
+.sighted-east { grid-area: east; }
+.sighted-south { grid-area: south; }
+
+.sighted-player {
+  font-size: 19px;
+  font-weight: 700;
+  color: white;
+}
+
+.sighted-table-card {
+  display: grid;
+  place-items: center;
+  width: 82px;
+  height: 116px;
+  border: 2px solid #b9c4d4;
+  border-radius: 9px;
+  background: white;
+  color: #121826;
+  font-size: 32px;
+  font-weight: 800;
+  box-shadow: 0 6px 15px #0003;
+}
+
+.sighted-waiting,
+.sighted-turn {
+  padding: 12px;
+  border: 1px dashed #dbe5ff;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.sighted-turn {
+  border-style: solid;
+  border-color: #ffc208;
+  color: #ffc208;
+}
+
+.sighted-table-center {
+  grid-area: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: #d6f5e5;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+}
+
+.sighted-table-center strong {
+  font-size: 60px;
+}
+
+.sighted-game-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 26px 0;
+  font-size: 17px;
+}
+
+@media (max-width: 700px) {
+  .sighted-game-heading,
+  .sighted-game-actions,
+  .sighted-table-status {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sighted-card-table {
+    min-height: 350px;
+    gap: 8px;
+    padding: 14px;
+    border-radius: 35px;
+  }
+
+  .sighted-table-card {
+    width: 58px;
+    height: 82px;
+    font-size: 23px;
+  }
+
+  .sighted-player {
+    font-size: 15px;
+  }
+
+  .sighted-table-center strong {
+    font-size: 38px;
+  }
+
+  .sighted-summary-header {
+    font-size: 11px;
+  }
+}

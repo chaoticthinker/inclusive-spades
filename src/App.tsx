@@ -1,4 +1,4 @@
-
+import SightedMode from './modes/SightedMode'
 import { getDemoTrickWinner } from './game/demoGame'
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
@@ -14,6 +14,7 @@ type InformationMode = 'blind' | 'low-vision' | 'sighted'
 type Screen =
   | 'welcome'
   | 'blind'
+  | 'sighted'
   | 'ready'
   | 'trick'
   | 'cards'
@@ -128,15 +129,17 @@ function App() {
     setScreen('result')
   }
 
-function chooseMode(mode: InformationMode) {
-  setSelectedMode(mode)
+  function chooseMode(mode: InformationMode) {
+    setSelectedMode(mode)
 
-  if (mode === 'blind') {
-    setScreen('blind')
-  } else {
-    setScreen('ready')
+    if (mode === 'blind') {
+      setScreen('blind')
+    } else if (mode === 'sighted') {
+      setScreen('sighted')
+    } else {
+      setScreen('ready')
+    }
   }
-}
 
   function returnToWelcome() {
     setScreen('welcome')
@@ -162,6 +165,10 @@ function chooseMode(mode: InformationMode) {
 
       {screen === 'blind' && (
         <BlindMode onChangeMode={returnToWelcome} />
+      )}
+
+      {screen === 'sighted' && (
+        <SightedMode onChangeMode={returnToWelcome} />
       )}
 
       {screen === 'welcome' && (
