@@ -270,3 +270,241 @@
     font-size: 11px;
   }
 }
+
+
+/* =====================================
+   SIGHTED MODE — CARDS AND CONFIRMATION
+   ===================================== */
+
+.sighted-selection,
+.sighted-confirm,
+.sighted-result {
+  max-width: 960px;
+  padding-top: 30px;
+}
+
+.sighted-selection-info {
+  margin: 28px 0 40px;
+}
+
+.sighted-suit-label {
+  display: inline-block;
+  padding: 10px 16px;
+  border: 1px solid #6d90de;
+  border-radius: 8px;
+  background: #052985;
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.sighted-selection-info p {
+  margin-top: 18px;
+  font-size: 19px;
+  line-height: 1.6;
+}
+
+.sighted-hand {
+  padding: 30px;
+  margin: 30px 0;
+  border: 1px solid #4772d1;
+  border-radius: 18px;
+  background: #0d1b43;
+}
+
+.sighted-hand h2 {
+  margin: 0 0 24px;
+  font-size: 24px;
+  color: #ffffff;
+}
+
+.sighted-hand-cards {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px;
+  min-height: 200px;
+}
+
+/* Keep existing PlayingCard buttons visible */
+.sighted-hand-cards button {
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.sighted-hand-cards button:focus-visible {
+  outline: 5px solid #ffc208;
+  outline-offset: 5px;
+}
+
+.sighted-hand-hint {
+  margin-top: 24px;
+  color: #dbe5ff;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.sighted-confirm-intro {
+  font-size: 20px;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.sighted-confirm-panel {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  padding: 40px;
+  border: 1px solid #4772d1;
+  border-radius: 20px;
+  background: #0d1b43;
+}
+
+.sighted-selected-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  width: 160px;
+  height: 224px;
+  flex-shrink: 0;
+  border: 3px solid #c6cfdb;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #03050a;
+  font-size: 64px;
+  font-weight: 800;
+}
+
+.sighted-confirm-details h2 {
+  margin: 16px 0;
+  color: #ffffff;
+  font-size: 30px;
+}
+
+.sighted-confirm-details p {
+  color: #dbe5ff;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.sighted-valid-label {
+  color: #ffc208;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.sighted-confirm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.sighted-secondary {
+  padding: 16px 34px;
+  border: 2px solid #b5c8ff;
+  border-radius: 10px;
+  background: transparent;
+  color: #ffffff;
+  font: inherit;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.sighted-secondary:hover {
+  background: #152a5c;
+}
+
+.sighted-secondary:focus-visible {
+  outline: 4px solid #ffc208;
+  outline-offset: 5px;
+}
+
+/* =====================================
+   SIGHTED MODE — TRICK RESULT
+   ===================================== */
+
+.sighted-result {
+  text-align: center;
+}
+
+.sighted-result-panel {
+  max-width: 720px;
+  margin: 32px auto;
+  padding: 40px;
+  border: 1px solid #4772d1;
+  border-radius: 20px;
+  background: #0d1b43;
+}
+
+.sighted-result-icon {
+  color: #ffc208;
+  font-size: 56px;
+}
+
+.sighted-result-panel h2 {
+  color: #ffffff;
+  font-size: 40px;
+  margin: 16px 0;
+}
+
+.sighted-result-panel p {
+  color: #dbe5ff;
+  font-size: 20px;
+}
+
+.sighted-result-scores {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 40px 0;
+}
+
+.sighted-result-scores > div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 22px;
+  border: 1px solid #4772d1;
+  border-radius: 12px;
+}
+
+.sighted-result-scores strong {
+  color: #ffffff;
+  font-size: 52px;
+}
+
+.sighted-next-leader {
+  font-weight: 700;
+}
+
+@media (max-width: 700px) {
+  .sighted-confirm-panel {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px;
+    gap: 24px;
+  }
+
+  .sighted-selected-card {
+    width: 110px;
+    height: 154px;
+    font-size: 44px;
+  }
+
+  .sighted-hand {
+    padding: 20px;
+  }
+
+  .sighted-result-panel {
+    padding: 24px;
+  }
+
+  .sighted-result-scores {
+    gap: 10px;
+  }
+}
+
