@@ -1,0 +1,139 @@
+
+/* Blind / Nonvisual mode */
+
+.blind-layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  min-height: calc(100vh - 76px);
+  background: #ffffff;
+}
+
+.blind-sidebar {
+  padding: 36px 32px;
+  border-right: 2px solid #d6dce5;
+  background: #f6f8fc;
+}
+
+.blind-sidebar h2 {
+  margin: 0 0 40px;
+  font-size: 20px;
+  color: #052985;
+}
+
+.blind-stat {
+  margin-bottom: 36px;
+}
+
+.blind-stat h3,
+.keyboard-help h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: #03050a;
+}
+
+.blind-stat p {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.keyboard-help {
+  margin-top: 70px;
+}
+
+.keyboard-help p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 4px 0;
+}
+
+.blind-content {
+  width: 100%;
+  max-width: 1000px;
+  padding: 48px 60px 100px;
+}
+
+.blind-content h1 {
+  font-size: 38px;
+  margin-bottom: 36px;
+}
+
+.blind-welcome {
+  font-size: 24px;
+  margin: 0 0 20px;
+}
+
+.blind-players {
+  width: 100%;
+  max-width: 720px;
+  border: 2px solid #03050a;
+  border-radius: 12px;
+  background: #f0f5ff;
+  padding: 24px 28px;
+}
+
+.blind-players ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.blind-players li {
+  padding: 12px 0;
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+.blind-bags {
+  font-size: 20px;
+  margin: 36px 0 0;
+}
+
+.blind-content .primary-button {
+  margin-top: 60px;
+}
+
+.blind-announcement {
+  max-width: 760px;
+  padding: 28px;
+  background: #f0f5ff;
+  border: 2px solid #03050a;
+  border-radius: 12px;
+}
+
+.blind-announcement h2 {
+  margin: 0 0 20px;
+  color: #052985;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.blind-announcement p {
+  font-size: 22px;
+  line-height: 1.6;
+}
+
+.blind-placeholder {
+  margin: 32px 0;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+@media (max-width: 800px) {
+  .blind-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .blind-sidebar {
+    border-right: none;
+    border-bottom: 2px solid #d6dce5;
+  }
+
+  .blind-content {
+    padding: 32px 24px 80px;
+  }
+
+  .blind-content h1 {
+    font-size: 32px;
+  }
+}

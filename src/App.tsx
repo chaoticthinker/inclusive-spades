@@ -6,11 +6,13 @@ import {
   getCardName,
   type PlayingCardData,
 } from './components/PlayingCard'
+import BlindMode from './modes/BlindMode'
 
 type InformationMode = 'blind' | 'low-vision' | 'sighted'
 
 type Screen =
   | 'welcome'
+  | 'blind'
   | 'ready'
   | 'trick'
   | 'cards'
@@ -162,10 +164,15 @@ function getDemoTrickWinner(playerCard: PlayingCardData) {
     setScreen('result')
   }
 
-  function chooseMode(mode: InformationMode) {
-    setSelectedMode(mode)
+function chooseMode(mode: InformationMode) {
+  setSelectedMode(mode)
+
+  if (mode === 'blind') {
+    setScreen('blind')
+  } else {
     setScreen('ready')
   }
+}
 
   function returnToWelcome() {
     setScreen('welcome')
@@ -187,6 +194,11 @@ function getDemoTrickWinner(playerCard: PlayingCardData) {
             : 'CHOOSE YOUR MODE'}
         </span>
       </header>
+
+
+      {screen === 'blind' && (
+        <BlindMode onChangeMode={returnToWelcome} />
+      )}
 
       {screen === 'welcome' && (
         <main className="main-content">
