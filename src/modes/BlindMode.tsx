@@ -1,4 +1,9 @@
+import {
+  getCardName,
+  type PlayingCardData,
+} from '../components/PlayingCard'
 
+import { getDemoTrickWinner } from '../game/demoGame'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import './BlindMode.css'
 
@@ -6,7 +11,12 @@ type BlindModeProps = {
   onChangeMode: () => void
 }
 
-type BlindStep = 'join' | 'announcement' | 'cards'
+type BlindStep =
+  | 'join'
+  | 'announcement'
+  | 'cards'
+  | 'confirm'
+  | 'result'
 type ReviewPanel = 'details' | 'hand' | null
 
 const players = [
@@ -28,6 +38,9 @@ const handCards = [
 
 function BlindMode({ onChangeMode }: BlindModeProps) {
   const [step, setStep] = useState<BlindStep>('join')
+  const [selectedCard, setSelectedCard] = useState<string | null>(null)
+  const cardToRefocus = useRef<string | null>(null)
+  const cardButtonRefs = useRef<Record<string, HTMLButtonElement | null>>({})
   const [reviewPanel, setReviewPanel] =
     useState<ReviewPanel>(null)
   const [liveMessage, setLiveMessage] = useState('')
@@ -131,6 +144,57 @@ function BlindMode({ onChangeMode }: BlindModeProps) {
     setReviewPanel(null)
     setLiveMessage('')
     setStep(nextStep)
+  }
+
+  // Convert the selected demo card into shared card data.
+  const demoPlayedCard: PlayingCardData | null = selectedCard
+    ? {
+        rank: selectedCard.startsWith('Queen') ? 'Q' : '8',
+        suit: 'clubs',
+      }
+    : null
+
+  // All presentation modes use the same winner calculation.
+  const demoWinner = demoPlayedCard
+    ? getDemoTrickWinner(demoPlayedCard)
+    : null
+
+  const resultAnnouncement = demoWinner
+    ? (
+        `${demoWinner.player} wins the trick with the ` +
+        `${getCardName(demoWinner.card)}. ` +
+        'Your team has 3 tricks. ' +
+        'Opponents have 1 trick. ' +
+        `${demoWinner.player} leads next.`
+      )
+    : ''
+
+  
+  function chooseCard(card: string) {
+    setSelectedCard(card)
+    cardToRefocus.current = card
+    goToStep('confirm')
+  }
+
+  function cancelCardSelection() {
+    setSelectedCard(null)
+    goToStep('cards')
+  }
+
+  useEffect(() => {
+  if (step === 'cards' && cardToRefocus.current) {
+    return
+  }
+
+  headingRef.current?.focus()
+}, [step])
+
+
+  function confirmPlay() {
+    if (!selectedCard || !demoWinner) return
+
+    goToStep('result')
+    announce(resultAnnouncement)
   }
 
   return (
@@ -336,6 +400,7 @@ function BlindMode({ onChangeMode }: BlindModeProps) {
           </>
         )}
 
+        
         {step === 'cards' && (
           <>
             <p className="step-label">STEP 3 OF 5</p>
@@ -344,15 +409,49 @@ function BlindMode({ onChangeMode }: BlindModeProps) {
               Choose a playable card
             </h1>
 
-            <p>
-              Clubs are led. You can play the eight of clubs
-              or the queen of clubs.
+            <p className="blind-card-instructions">
+              Clubs are led. You have two playable cards.
+              Use Tab to move between cards and Enter or
+              Space to select one.
             </p>
 
-            <p className="blind-placeholder">
-              In our next step, we'll add interactive
-              card selection and confirmation.
-            </p>
+            <section
+              className="blind-card-list"
+              aria-labelledby="playable-cards-heading"
+            >
+              <h2 id="playable-cards-heading">
+                Your playable cards
+              </h2>
+
+              <div className="blind-card-options">
+                {handCards.map((card) => {
+                  const cardName = card.replace(', playable', '')
+
+                  return (
+                    <button
+                      key={card}
+                      type="button"
+                      className="blind-card-option"
+                      ref={(element) => {
+                        cardButtonRefs.current[card] = element
+                      }}
+                      onClick={() => chooseCard(card)}
+                      aria-label={`Play ${cardName}`}
+                    >
+                      <span aria-hidden="true">
+                        ♣
+                      </span>
+
+                      <span>{cardName}</span>
+
+                      <span className="blind-card-valid">
+                        Playable
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
+            </section>
 
             <button
               type="button"
@@ -363,6 +462,140 @@ function BlindMode({ onChangeMode }: BlindModeProps) {
             </button>
           </>
         )}
+
+        
+      
+    {step === 'confirm' && selectedCard && (
+      <>
+        <p className="step-label">STEP 4 OF 5</p>
+
+        <h1
+          ref={headingRef}
+          tabIndex={-1}
+          aria-describedby="blind-confirm-description"
+        >
+          Confirm your card
+        </h1>
+
+        <section
+          className="blind-confirm-panel"
+          aria-labelledby="blind-confirm-question"
+        >
+          <h2
+            id="blind-confirm-question"
+            className="blind-confirm-question"
+          >
+            Play the {selectedCard.replace(', playable', '')}?
+          </h2>
+
+          <p
+            id="blind-confirm-description"
+            className="blind-valid-play"
+          >
+            Valid play. Clubs are led, and this card
+            follows suit.
+          </p>
+
+          <p>
+            You can confirm your selection or cancel
+            to choose a different card.
+          </p>
+        </section>
+
+        <div className="blind-controls">
+          <button
+            type="button"
+            className="primary-button"
+            onClick={confirmPlay}
+          >
+            Confirm play
+          </button>
+
+          <button
+            type="button"
+            className="secondary-button"
+            onClick={cancelCardSelection}
+          >
+            Cancel and return to cards
+          </button>
+        </div>
+      </>
+    )}
+
+
+      
+    {step === 'result' && demoWinner && (
+      <>
+        <p className="step-label">STEP 5 OF 5</p>
+
+        <h1
+          ref={headingRef}
+          tabIndex={-1}
+          aria-describedby="blind-result-summary"
+        >
+          Trick complete
+        </h1>
+
+        <section
+          className="blind-result-panel"
+          aria-labelledby="blind-winner-heading"
+        >
+          <h2 id="blind-winner-heading">
+            {demoWinner.player} wins the trick
+          </h2>
+
+          <p id="blind-result-summary">
+            {getCardName(demoWinner.card)} takes the trick.
+          </p>
+
+          <dl className="blind-result-details">
+            <dt>Winning player</dt>
+            <dd>{demoWinner.player}</dd>
+
+            <dt>Winning card</dt>
+            <dd>{getCardName(demoWinner.card)}</dd>
+
+            <dt>Your team's tricks</dt>
+            <dd>3</dd>
+
+            <dt>Opponents' tricks</dt>
+            <dd>1</dd>
+
+            <dt>Next player to lead</dt>
+            <dd>{demoWinner.player}</dd>
+          </dl>
+        </section>
+
+        <div className="blind-controls">
+          <button
+            type="button"
+            className="secondary-button"
+            onClick={() => announce(resultAnnouncement)}
+          >
+            Repeat trick result
+          </button>
+
+          <button
+            type="button"
+            className="primary-button"
+            onClick={() => {
+              setSelectedCard(null)
+              cardToRefocus.current = null
+              goToStep('join')
+            }}
+          >
+            Restart demo
+          </button>
+        </div>
+
+        <p className="demo-note">
+          Demonstration result using the sample trick.
+        </p>
+      </>
+    )}
+
+
+
       </div>
 
       {/* Dedicated screen-reader announcement region */}

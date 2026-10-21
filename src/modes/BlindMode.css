@@ -215,3 +215,129 @@
     min-width: 0;
   }
 }
+
+/* Blind Mode — Card Selection */
+
+.blind-card-instructions {
+  max-width: 720px;
+  font-size: 20px;
+  line-height: 1.6;
+  margin-bottom: 36px;
+}
+
+.blind-card-list {
+  max-width: 760px;
+  margin-bottom: 40px;
+}
+
+.blind-card-list h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.blind-card-options {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.blind-card-option {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+  padding: 24px;
+  border: 2px solid #052985;
+  border-radius: 12px;
+  background: #f0f5ff;
+  color: #03050a;
+  font-family: inherit;
+  font-size: 22px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.blind-card-option:hover {
+  background: #dfeaff;
+}
+
+.blind-card-option:focus-visible {
+  outline: 5px solid #ffc208;
+  outline-offset: 4px;
+}
+
+.blind-card-valid {
+  margin-left: auto;
+  color: #052985;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.blind-confirm-question {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+/* Blind Mode — Confirmation and Result */
+
+.blind-confirm-panel,
+.blind-result-panel {
+  max-width: 760px;
+  padding: 32px;
+  margin-bottom: 32px;
+  background: #f0f5ff;
+  border: 2px solid #052985;
+  border-radius: 12px;
+}
+
+.blind-confirm-question {
+  font-size: 28px;
+  margin: 0 0 24px;
+  line-height: 1.4;
+}
+
+.blind-valid-play {
+  font-size: 20px;
+  font-weight: 700;
+  color: #052985;
+}
+
+.blind-result-panel h2 {
+  font-size: 28px;
+  margin: 0 0 16px;
+}
+
+.blind-result-panel p {
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+.blind-result-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 32px;
+  font-size: 18px;
+}
+
+.blind-result-details dt {
+  font-weight: 700;
+}
+
+.blind-result-details dd {
+  margin: 0;
+}
+
+@media (max-width: 700px) {
+  .blind-confirm-panel,
+  .blind-result-panel {
+    padding: 24px;
+  }
+
+  .blind-result-details {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
